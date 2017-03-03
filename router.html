@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.css">
+</head>
+<style>
+    .circle img{
+        max-width: 100px;
+}
+</style>
+
+<body>
+    <div ng-app="app">
+        <a href="#/">首页</a>
+        <a href="#/list">列表页</a>
+        <a href="#/news">最新资讯</a>
+        <a href="#/me">关于我</a>
+        <div ng-view></div>
+    </div>
+    <script src="http://cdn.bootcss.com/angular.js/1.6.2/angular.min.js"></script>
+    <script src="http://cdn.bootcss.com/angular.js/1.6.2/angular-route.min.js"></script>
+    <script src="http://cdn.bootcss.com/angular-sanitize/1.6.2/angular-sanitize.min.js"></script>
+    <script src="js/dist.js"></script>
+</body>
+
+</html>

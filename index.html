@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>angular.js-服务</title>
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.css">
+</head>
+<style>
+
+</style>
+<body>
+    <div ng-app="app">
+        <div ng-controller="mainCtrl" class="container">
+            <div class="col-md-4">
+                <ul class="list">
+                    <li class="list-group-item"  ng-click="changBook(book)"  ng-repeat="book in books">{{book.title}}</li>
+                </ul>
+            </div>
+            <div class="col-md-8">
+                <div ng-bind-html="htmlData"></div>
+            </div>
+        </div> 
+    </div>
+    <script src="http://cdn.bootcss.com/angular.js/1.6.2/angular.min.js"></script>
+    <script src="http://cdn.bootcss.com/angular-sanitize/1.6.2/angular-sanitize.min.js"></script>
+    <script>
+        var app = angular.module('app',['ngSanitize'])
+        app.service('hs',['$http',function ($http){
+            //通过get得到书籍信息
+            this.getData=function (cb){
+                $http.get('http://penkuoer.com/api/v1/book/get_books_by_page.json?page=1')
+                    .then(function (res){
+                        cb(res.data)
+                    })
+            }   
+            }])
+            //通过factory创建一个服务
+        app.factory('ws',['$http',function ($http){
+            var s = {}
+            s.getDetail = function (id,cd){
+                //此方法创建的服务需要一个返回值
+                //根据id获取书籍信息详情
+                console.log($http)
+                $http.get('http://penkuoer.com/api/v1/book/get_book_detail.json?id='+ id )
+                    .then(function (res){
+                        cd(res.data)
+                    })
+            }
+            return s
+        }])
+      //控制器
+        app.controller('mainCtrl',['$scope','hs','ws','$element',function ($s,hs,ws,$e){
+            $s.htmlData = ''
+            $books = []
+            //创建一个服务 进行远程数据请求
+            hs.getData(function (res){
+                $s.books = res.data
+            })
+            // ws.getDetail('27034',function (res){
+            //     $s.htmlData = res.data.content
+            // })
+            $s.changBook = function (data){
+                console.log(data)
+                $s.htmlData = ''
+                    ws.getDetail(data.id,function (res){
+                    $s.htmlData = res.data.content  //显示书籍信息
+                })
+            }
+        }])
+    </script>
+</body>
+</html>
